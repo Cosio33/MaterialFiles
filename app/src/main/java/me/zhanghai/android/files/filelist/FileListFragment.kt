@@ -336,6 +336,12 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 path = Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat
             }
             viewModel.resetTo(path)
+            val searchQuery = intent.getStringExtra(FileListActivity.EXTRA_SEARCH_QUERY)
+            if (!searchQuery.isNullOrEmpty()) {
+                viewModel.isSearchViewExpanded = true
+                viewModel.searchViewQuery = searchQuery
+                viewModel.search(searchQuery)
+            }
             if (pickOptions != null) {
                 viewModel.pickOptions = pickOptions
             }

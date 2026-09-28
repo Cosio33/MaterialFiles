@@ -44,10 +44,20 @@ class FileListActivity : AppActivity() {
     }
 
     companion object {
+        const val EXTRA_SEARCH_QUERY = "${BuildConfig.APPLICATION_ID}.intent.extra.SEARCH_QUERY"
+
         fun createViewIntent(path: Path): Intent =
             FileListActivity::class.createIntent()
                 .setAction(Intent.ACTION_VIEW)
                 .apply { extraPath = path }
+
+        fun createSearchIntent(query: String, path: Path? = null): Intent =
+            FileListActivity::class.createIntent()
+                .setAction(Intent.ACTION_VIEW)
+                .apply {
+                    extraPath = path
+                    putExtra(EXTRA_SEARCH_QUERY, query)
+                }
     }
 
     class OpenFileContract : ActivityResultContract<List<MimeType>, Path?>() {

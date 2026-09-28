@@ -21,6 +21,7 @@ import me.zhanghai.android.files.compat.getDescriptionCompat
 import me.zhanghai.android.files.compat.isPrimaryCompat
 import me.zhanghai.android.files.compat.pathCompat
 import me.zhanghai.android.files.file.JavaFile
+import me.zhanghai.android.files.filelist.FileListActivity
 import me.zhanghai.android.files.file.asFileSize
 import me.zhanghai.android.files.ftpserver.FtpServerActivity
 import me.zhanghai.android.files.settings.Settings
@@ -205,7 +206,13 @@ private val standardDirectoryItems: List<NavigationItem>
     get() =
         StandardDirectoriesLiveData.valueCompat
             .filter { it.isEnabled }
-            .map { StandardDirectoryItem(it) }
+            .map {
+                if (it.relativePath == APK_DIRECTORY_RELATIVE_PATH) {
+                    ApkSearchItem(it)
+                } else {
+                    StandardDirectoryItem(it)
+                }
+            }
 
 private class StandardDirectoryItem(
     private val standardDirectory: StandardDirectory
@@ -229,6 +236,35 @@ private class StandardDirectoryItem(
     }
 }
 
+private class ApkSearchItem(
+    private val standardDirectory: StandardDirectory
+) : NavigationItem() {
+    override val id: Long
+        get() = standardDirectory.id
+
+    override val iconRes: Int
+        @DrawableRes
+        get() = standardDirectory.iconRes
+
+    override fun getTitle(context: Context): String = standardDirectory.getTitle(context)
+
+    override fun onClick(listener: Listener) {
+        // List all .apk files on the primary storage volume without moving them (per user choice).
+        listener.launchIntent(
+            FileListActivity.createSearchIntent(
+                ".apk",
+                Paths.get(Environment.getExternalStorageDirectory().path)
+            )
+        )
+        listener.closeNavigationDrawer()
+    }
+
+    override fun onLongClick(listener: Listener): Boolean {
+        listener.launchIntent(StandardDirectoryListActivity::class.createIntent())
+        return true
+    }
+}
+
 val standardDirectories: List<StandardDirectory>
     get() {
         val settingsMap = Settings.STANDARD_DIRECTORY_SETTINGS.valueCompat.associateBy { it.id }
@@ -239,6 +275,8 @@ val standardDirectories: List<StandardDirectory>
     }
 
 private const val relativePathSeparator = ":"
+
+private const val APK_DIRECTORY_RELATIVE_PATH = "APK"
 
 private val defaultStandardDirectories: List<StandardDirectory>
     // HACK: Show QQ, TIM and WeChat standard directories based on whether the directory exists.
@@ -301,7 +339,7 @@ private val DEFAULT_STANDARD_DIRECTORIES = listOf(
     ),
     StandardDirectory(
         R.drawable.apk_icon_white_24dp, R.string.navigation_standard_directory_apk,
-        "APK", true
+        APK_DIRECTORY_RELATIVE_PATH, true
     ),
     StandardDirectory(
         R.drawable.podcast_icon_white_24dp, R.string.navigation_standard_directory_podcasts,
