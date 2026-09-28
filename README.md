@@ -28,6 +28,16 @@ An open source Material Design file manager, for Android 5.0+.
 - Robust: Uses Linux system calls under the hood, not yet another [`ls` parser](https://news.ycombinator.com/item?id=7994720).
 - Well-implemented: Built upon the right things, including [Java NIO2 File API](https://docs.oracle.com/javase/8/docs/api/java/nio/file/package-summary.html) and [LiveData](https://developer.android.com/topic/libraries/architecture/livedata).
 
+## Fork modifications (Cosio33)
+
+This fork adds a couple of navigation drawer tweaks on top of upstream Material Files:
+
+- **Renamed "Movies" → "Videos"**: the standard directory label in the navigation drawer now reads "Videos". The rename was applied to both the default `values/strings.xml` and the Spanish `values-es/strings.xml`, so it also shows correctly on Spanish-locale devices (upstream only changed the English string, leaving Spanish phones showing "Películas").
+- **New "APK" shortcut**: an APK entry (📦) is added to the navigation drawer, enabled by default and placed right after **Pictures**.
+  - Tapping it does **not** open a folder. Instead, it launches an immediate, recursive search for every `.apk` file across the primary storage volume and lists the results — no files are moved or copied.
+  - The search is rooted at the primary storage directory, so it covers the whole device. On Android 11+ (scoped storage) a full-device search requires the app's "All files access" permission (`MANAGE_EXTERNAL_STORAGE`), which Material Files already requests on first launch.
+  - Like any other standard directory, the APK entry can be toggled on/off from the standard directories editor (long-press the entry in the drawer).
+
 ## Why Material Files?
 
 Because I like Material Design, and clean Material Design.
