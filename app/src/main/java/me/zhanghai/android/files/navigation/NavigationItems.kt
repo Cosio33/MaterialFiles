@@ -276,7 +276,8 @@ private val DEFAULT_STANDARD_DIRECTORIES = listOf(
     ),
     StandardDirectory(
         R.drawable.document_icon_white_24dp, R.string.navigation_standard_directory_documents,
-        Environment.DIRECTORY_DOCUMENTS, false),
+        Environment.DIRECTORY_DOCUMENTS, true
+    ),
     StandardDirectory(
         R.drawable.download_icon_white_24dp, R.string.navigation_standard_directory_downloads,
         Environment.DIRECTORY_DOWNLOADS, true
@@ -297,6 +298,10 @@ private val DEFAULT_STANDARD_DIRECTORIES = listOf(
     StandardDirectory(
         R.drawable.image_icon_white_24dp, R.string.navigation_standard_directory_pictures,
         Environment.DIRECTORY_PICTURES, true
+    ),
+    StandardDirectory(
+        R.drawable.apk_icon_white_24dp, R.string.navigation_standard_directory_apk,
+        "APK", true
     ),
     StandardDirectory(
         R.drawable.podcast_icon_white_24dp, R.string.navigation_standard_directory_podcasts,
