@@ -596,7 +596,7 @@
     <string name="navigation_standard_directory_dcim">DCIM</string>
     <string name="navigation_standard_directory_documents">Documentos</string>
     <string name="navigation_standard_directory_downloads">Descargas</string>
-    <string name="navigation_standard_directory_movies">Películas</string>
+    <string name="navigation_standard_directory_movies">Videos</string>
     <string name="navigation_standard_directory_music">Música</string>
     <string name="navigation_standard_directory_notifications">Notificaciones</string>
     <string name="navigation_standard_directory_pictures">Imágenes</string>
